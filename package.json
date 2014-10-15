@@ -2,7 +2,13 @@
 	"name": "dethunkt",
 	"version": "1.0.0",
 	"description": "DBus as generators",
-	"keywords": ["dbus", "thunk", "co", "generators", "rpc"],
+	"keywords": [
+		"dbus",
+		"thunk",
+		"co",
+		"generators",
+		"rpc"
+	],
 	"main": "dethunkt.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -17,8 +23,12 @@
 		"url": "https://github.com/rektide/dethunkt/issues"
 	},
 	"dependencies": {
+		"async-stash": "^1.0.1",
+		"co": "^3.1.0",
+		"co-gen-factory": "^1.0.0",
 		"dbus-native": "^0.1.0",
 		"memoizee": "^0.3.7",
+		"native-or-bluebird": "^1.1.1",
 		"thunkify-wrap": "^1.0.2"
 	}
 }
