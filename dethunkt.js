@@ -12,48 +12,28 @@ function readFactory(val, def){
 	}
 }
 
-function factoryGen(fn){
-	var _private;
-	function *_fnGen(){
-		while(1){
-			yield _private|| (_private= fn());
-		}
-	}
-	return _fnGen()
-}
-
 // buses
-var sessionBusFactory= factoryGen(function(){
-	return dbus.sessionBus()
-})
-var systemBusFactory= factoryGen(function(){
-	return dbus.systemBus()
-})
+var sessionBusFactory= coGenFactory(function*(){
+	yield dbus.sessionBus()
+})()
+var systemBusFactory= coGenFactory(function*(){
+	yield dbus.systemBus()
+})()
 
 // services
-function *serviceGen(service, busFactory){
-	var _service
-	while(1){
-		if(!_service)
-			_service= readFactory(busFactory, sessionBusFactory).getService(service)
-		yield service
-	}
-}
-var _services= memoizee(serviceGen)
-
-function services(service, busFactory){
-	return _service(service, busFactory).next()
-}
+var services= coGenFactory(function*(service, busFactory){
+	yield readFactory(busFactory, sessionBusFactory).getService(service)
+})
 
 function getService(service, busFactory){
 	return {
 		interface: (function interface(object, interface){
-			var _service= services(service, readFactory(busFactory, sessionBusFactory))
+			var _service= services(service, busFactory)
 			var _interface= _service.getInferface(object, interface)
 			return genify(_interface)
 		}),
 		object: (function(objName){
-			var _service= services(service, readFactory(busFactory, sessionBusFactory))
+			var _service= services(service, busFactory)
 			var _object= _service.getObject(objName)
 			return genify(_object)
 		})

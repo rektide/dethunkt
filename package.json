@@ -30,5 +30,8 @@
 		"memoizee": "^0.3.7",
 		"native-or-bluebird": "^1.1.1",
 		"thunkify-wrap": "^1.0.2"
+	},
+	"devDependencies": {
+		"tape": "^3.0.3"
 	}
 }
